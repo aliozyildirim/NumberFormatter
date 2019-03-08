@@ -110,21 +110,26 @@ class NumberFormatterPriceToText
     {
         $tmp = explode($text, $price);
         
+        if ($currencyCode == 'EUR')
+        {
+            $currencyCode = 'USD';
+        }
+        
         $search = [
             'TRY' => ['bir', 'iki', 'üç', 'dört', 'beş', 'altı', 'yedi', 'sekiz', 'dokuz'],
             'USD' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
-            'EUR' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+//            'EUR' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
         ];
         $replace = [
             'TRY' => ['on', 'yirmi', 'otuz', 'kirk', 'elli', 'altmış', 'yetmis', 'seksen', 'doksan'],
             'USD' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
-            'EUR' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+//            'EUR' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
         ];
         
         $aa = [
             'TRY' => 'Krş.',
             'USD' => 'Cents.',
-            'EUR' => 'Sent.'
+//            'EUR' => 'Sent.'
         ];
         
         $tmpr = ltrim($tmp[1], ' ');
