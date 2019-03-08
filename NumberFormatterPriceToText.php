@@ -110,42 +110,66 @@ class NumberFormatterPriceToText
     {
         $tmp = explode($text, $price);
         
-        if ($currencyCode == 'EUR')
-        {
-            $currencyCode = 'USD';
-        }
-        
-        $search = [
-            'TRY' => ['bir', 'iki', 'üç', 'dört', 'beş', 'altı', 'yedi', 'sekiz', 'dokuz'],
-            'USD' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
-//            'EUR' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
-        ];
-        $replace = [
-            'TRY' => ['on', 'yirmi', 'otuz', 'kirk', 'elli', 'altmış', 'yetmis', 'seksen', 'doksan'],
-            'USD' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
-//            'EUR' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
-        ];
-        
-        $aa = [
-            'TRY' => 'Krş.',
-            'USD' => 'Cents.',
-//            'EUR' => 'Sent.'
-        ];
         
         $tmpr = ltrim($tmp[1], ' ');
         $t = explode(' ', $tmpr);
         
         if( count($t) > 1 ){
             
-            $ta = str_replace($search[$currencyCode], $replace[$currencyCode], $t[0]);
+            $ta = str_replace(self::getSearchText($currencyCode), self::getReplaceText($currencyCode), $t[0]);
             
-            return $tmp[0] . $text . ' ' . $ta . ' ' . $t[1] . ' ' . $aa[$currencyCode];
+            return $tmp[0] . $text . ' ' . $ta . ' ' . $t[1] . ' ' . self::priceTextAfterPoint($currencyCode);
             
         } else {
+            $ta = str_replace(self::getSearchText($currencyCode), self::getReplaceText($currencyCode), $tmp[1]);
             
-            $ta = str_replace($search[$currencyCode], $replace[$currencyCode], $tmp[1]);
-            
-            return $tmp[0] . $text . $ta . ' ' . $aa[$currencyCode];
+            return $tmp[0] . $text . $ta . ' ' . self::priceTextAfterPoint($currencyCode);
         }
+    }
+    
+    /**
+     * @param $currencyCode
+     * @return mixed
+     */
+    public static function getSearchText($currencyCode)
+    {
+        $search = [
+            'TRY' => ['bir', 'iki', 'üç', 'dört', 'beş', 'altı', 'yedi', 'sekiz', 'dokuz'],
+            'USD' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+            'EUR' => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+        ];
+        
+        return $search[$currencyCode];
+    }
+    
+    /**
+     * @param $currencyCode
+     * @return mixed
+     */
+    public static function getReplaceText($currencyCode)
+    {
+        
+        $replace = [
+            'TRY' => ['on', 'yirmi', 'otuz', 'kirk', 'elli', 'altmış', 'yetmis', 'seksen', 'doksan'],
+            'USD' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+            'EUR' => ['ten', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+        ];
+        
+        return $replace[$currencyCode];
+    }
+    
+    /**
+     * @param $currencyCode
+     * @return mixed
+     */
+    public static function priceTextAfterPoint($currencyCode)
+    {
+        $aa = [
+            'TRY' => 'Krş.',
+            'USD' => 'Cents.',
+            'EUR' => 'Sent.'
+        ];
+        
+        return $aa[$currencyCode];
     }
 }
